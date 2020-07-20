@@ -50,6 +50,12 @@ app.use("/api/v1/email", emailRoutes);
 //     })
 // }
 
+app.use('*', (req, res, next) => {
+    res.json({ message: 'Invalid url'});
+});
+
+app.use((err, req, res, next) => res.json(err))
+
 const PORT = process.env.PORT || 5000
 
 sequelize.sync()
