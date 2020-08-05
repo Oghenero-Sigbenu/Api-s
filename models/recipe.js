@@ -13,10 +13,10 @@ class Recipes extends Sequelize.Model{}
             type: Sequelize.STRING(),
             allowNull: false
         },
-        likes: {
-            type: Sequelize.INTEGER(),
-            defaultValue: 0
-        },
+        // likes: {
+        //     type: Sequelize.INTEGER(),
+        //     defaultValue: 0
+        // },
         steps:{
             type: Sequelize.STRING(),
             allowNull: false

@@ -4,7 +4,7 @@ const express = require("express");
 const path = require("path");
 
 // Enables Cross Origin Resource Sharing for our Project
-const cors = require("cors");
+           const cors = require("cors");
 
 //importing different routes
 const userRoutes = require("./routes/api/user");

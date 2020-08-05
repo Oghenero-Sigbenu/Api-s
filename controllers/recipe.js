@@ -10,15 +10,13 @@ exports.getAllRecipes = (req, res, next) => {
             {
                 all: true,
                 attributes: { exclude: ["password", "createdAt", "updatedAt"] }
-            }
-        ]
-    }
-
-    )
+            }]
+        })
         .then(recipe => {
             res.json(recipe)
         })
-        .catch(err => res.json({ msg: failed, error: err }))
+        .catch((err) => next(err))
+        // .catch(err => res.json({ msg: failed, error: err }))
 };
 
 //get recipe by Id
@@ -139,36 +137,36 @@ exports.updateRecipe = (req, res, next) => {
         .catch(next)
 };
 
-exports.postLikeRecipe = (req, res, next) => {
-    const { userId, recipeId } = req.body;
-    Recipe.findByPk(recipeId)
-        .then(async (recipe) => {
-            if (!recipe) {
-                return res.status(httpStatus.NOT_FOUND)
-                    .json({ message: "recipe does not exist" })
-            }
+// exports.postLikeRecipe = (req, res, next) => {
+//     const { userId, recipeId } = req.body;
+//     Recipe.findByPk(recipeId)
+//         .then(async (recipe) => {
+//             if (!recipe) {
+//                 return res.status(httpSta .catch((err) => next(err))tus.NOT_FOUND)
+//                     .json({ message: "recipe does not exist" })
+//             }
 
-            try {
-                // if the user aready liked the recipe
-                // decrement the likes count
-                // else, increment it
-                const liked = await Like.findOne({ UserId: userId, RecipeId: recipeId });
-                if (liked) {
-                    // unlike
-                    recipe.likes = recipe.likes - 1;
-                    await recipe.save();
-                    await Like.destroy({ UserId: userId, RecipeId: recipeId });
-                    return res.json({ message: `${recipe.title} liked successfully`});
-                }
+//             try {
+//                 // if the user aready liked the recipe
+//                 // decrement the likes count
+//                 // else, increment it
+//                 const liked = await Like.findOne({ UserId: userId, RecipeId: recipeId });
+//                 if (liked) {
+//                     // unlike
+//                     recipe.likes = recipe.likes - 1;
+//                     await recipe.save();
+//                     await Like.destroy({ UserId: userId, RecipeId: recipeId });
+//                     return res.json({ message: `${recipe.title} liked successfully`});
+//                 }
 
-                // create like record
-                const like = await Like.create({ UserId: userId, RecipeId: recipeId, likes: 1 });
-                // increment like count
-                recipe.likes = recipe.likes + 1;
-                recipe = await recipe.save();
-                res.json({ message: "recipe liked succesfully", data: recipe })
-            } catch (error) {
-                return next(error);
-            }
-        }).catch(next)
-}
+//                 // create like record
+//                 const like = await Like.create({ UserId: userId, RecipeId: recipeId, likes: 1 });
+//                 // increment like count
+//                 recipe.likes = recipe.likes + 1;
+//                 recipe = await recipe.save();
+//                 res.json({ message: "recipe liked succesfully", data: recipe })
+//             } catch (error) {
+//                 return next(error);
+//             }
+//         }).catch(next)
+// }
